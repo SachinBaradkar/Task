@@ -46,7 +46,14 @@ function OtpVerificationPage() {
         email,
         otp: enteredOtp,
       });
+
       if (response.data.message === "OTP verified successfully") {
+        // Store JWT token in localStorage
+        const token = response.data.token;
+        if (token) {
+          localStorage.setItem("authToken", token);
+        }
+
         // Navigate to the Dashboard after OTP verification
         navigate("/Dashboard", {
           state: { successMessage: "OTP verified successfully! Welcome to Dashboard!" },

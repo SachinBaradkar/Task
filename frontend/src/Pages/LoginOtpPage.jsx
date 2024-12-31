@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,9 +9,11 @@ function LoginOtpPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const successMessage = location.state?.successMessage || '';
 
   const isValidEmail = (email) => {
-    // Regex for email validation
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
@@ -27,26 +29,27 @@ function LoginOtpPage() {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/send-otp", {
-        email,
-      });
-
+      const response = await axios.post("http://localhost:5000/api/auth/send-otp", { email });
       if (response.data.message === "OTP sent successfully") {
         navigate("/verify-otp", { state: { email, successMessage: "OTP sent to your email." } });
       } else {
         toast.error(response.data.message || "Failed to send OTP.", { position: "bottom-center", autoClose: 3000 });
       }
     } catch (error) {
-      console.error("Error sending OTP:", error);
       toast.error("Error sending OTP. Please try again.", { position: "bottom-center", autoClose: 3000 });
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage, { position: "bottom-center", autoClose: 3000 });
+    }
+  }, [successMessage]);
+
   return (
     <div className="page-container">
-      {/* ToastContainer with bottom-center position */}
       <ToastContainer position="bottom-center" autoClose={3000} />
       <div className="background-rectangle">
         <div className="left-card">
@@ -64,11 +67,7 @@ function LoginOtpPage() {
             value={email}
             onChange={handleEmailChange}
           />
-          <button
-            className="send-otp-button"
-            onClick={handleGetOtpClick}
-            disabled={loading}
-          >
+          <button className="send-otp-button" onClick={handleGetOtpClick} disabled={loading}>
             {loading ? "Sending..." : "Get OTP"}
           </button>
         </div>
