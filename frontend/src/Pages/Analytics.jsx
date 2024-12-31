@@ -74,136 +74,64 @@ const Analytics = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-    <div style={{ width: "90%", margin: "auto", textAlign: "center" }}>
-      <h2 style={{ fontFamily: "Arial, sans-serif", color: "#333" }}>Task Analytics</h2>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "20px",
-        }}
-      >
-        {/* Weekly Progress - Bar Chart */}
-        <div style={{ width: "45%", height: "300px" }}>
-          <h3 style={{ fontFamily: "Arial, sans-serif", color: "#333" }}>
-            Weekly Task Status
-          </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={weeklyData}
-              margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="Completed" stackId="a" fill="#4caf50" />
-              <Bar dataKey="In Progress" stackId="a" fill="#6a1b9a" />
-              <Bar dataKey="Pending" stackId="a" fill="#ffb300" />
-            </BarChart>
-          </ResponsiveContainer>
-          <div style={{ marginTop: "10px", display: "flex", gap: "10px", justifyContent: "flex-end" }}>
-            <button
-              onClick={() =>
-                downloadAsPdf(
-                  weeklyData,
-                  "Weekly Task Status",
-                  "Weekly_Task_Status"
-                )
-              }
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#4caf50",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              Download Weekly PDF
-            </button>
-            <button
-              onClick={() =>
-                downloadAsCsv(weeklyData, "Weekly Task Status", "Weekly_Task_Status")
-              }
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#4caf50",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              Download Weekly CSV
-            </button>
+      <div className="analytics-container">
+        <h2>Task Analytics</h2>
+        <div className="analytics-charts">
+          {/* Weekly Progress - Bar Chart */}
+          <div className="chart-container">
+            <h3>Weekly Task Status</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={weeklyData}
+                margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="Completed" stackId="a" fill="#4caf50" />
+                <Bar dataKey="In Progress" stackId="a" fill="#6a1b9a" />
+                <Bar dataKey="Pending" stackId="a" fill="#ffb300" />
+              </BarChart>
+            </ResponsiveContainer>
+            <div className="button-container">
+              <button onClick={() => downloadAsPdf(weeklyData, "Weekly Task Status", "Weekly_Task_Status")}>
+                Download Weekly PDF
+              </button>
+              <button onClick={() => downloadAsCsv(weeklyData, "Weekly Task Status", "Weekly_Task_Status")}>
+                Download Weekly CSV
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Monthly Progress - Line Chart */}
-        <div style={{ width: "45%", height: "300px" }}>
-          <h3 style={{ fontFamily: "Arial, sans-serif", color: "#333" }}>
-            Monthly Task Status
-          </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={monthlyData}
-              margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="Completed" stroke="#4caf50" />
-              <Line type="monotone" dataKey="In Progress" stroke="#6a1b9a" />
-              <Line type="monotone" dataKey="Pending" stroke="#ffb300" />
-            </LineChart>
-          </ResponsiveContainer>
-          <div style={{ marginTop: "10px", display: "flex", gap: "10px", justifyContent: "flex-end" }}>
-            <button
-              onClick={() =>
-                downloadAsPdf(
-                  monthlyData,
-                  "Monthly Task Status",
-                  "Monthly_Task_Status"
-                )
-              }
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#6a1b9a",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              Download Monthly PDF
-            </button>
-            <button
-              onClick={() =>
-                downloadAsCsv(monthlyData, "Monthly Task Status", "Monthly_Task_Status")
-              }
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#6a1b9a",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              Download Monthly CSV
-            </button>
+          {/* Monthly Progress - Line Chart */}
+          <div className="chart-container">
+            <h3>Monthly Task Status</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthlyData} margin={{ top: 20, right: 20, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="Completed" stroke="#4caf50" />
+                <Line type="monotone" dataKey="In Progress" stroke="#6a1b9a" />
+                <Line type="monotone" dataKey="Pending" stroke="#ffb300" />
+              </LineChart>
+            </ResponsiveContainer>
+            <div className="button-container">
+              <button onClick={() => downloadAsPdf(monthlyData, "Monthly Task Status", "Monthly_Task_Status")}>
+                Download Monthly PDF
+              </button>
+              <button onClick={() => downloadAsCsv(monthlyData, "Monthly Task Status", "Monthly_Task_Status")}>
+                Download Monthly CSV
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    </div>
-    
   );
 };
 
