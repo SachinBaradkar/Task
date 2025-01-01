@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import Sidebar from "../components/Sidebar";
 
-function TaskScreen() {
+function TaskScreen({ theme }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false); // To toggle the add task form
+  const [showForm, setShowForm] = useState(false);
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
     dueDate: "",
   });
 
-  const [taskToUpdate, setTaskToUpdate] = useState(null); // Task selected for update
+  const [taskToUpdate, setTaskToUpdate] = useState(null);
   const [updatedTask, setUpdatedTask] = useState({
     title: "",
     description: "",
     dueDate: "",
-    status: "Pending", // Default status
+    status: "Pending",
   });
 
   useEffect(() => {
@@ -67,11 +67,8 @@ function TaskScreen() {
       const userId = "676ea46c6759cb75b8acbd5b"; // Replace with the actual user ID logic if dynamic
       const taskToSend = {
         ...newTask,
-        createdBy: userId, // Add createdBy field
+        createdBy: userId,
       };
-
-      // Log the task being sent for debugging
-      console.log("Task being sent:", taskToSend);
 
       const response = await fetch("http://localhost:5000/api/tasks", {
         method: "POST",
@@ -88,8 +85,8 @@ function TaskScreen() {
 
       const addedTask = await response.json();
       setTasks((prevTasks) => [...prevTasks, addedTask]);
-      setShowForm(false); // Close the form
-      setNewTask({ title: "", description: "", dueDate: "" }); // Reset form
+      setShowForm(false);
+      setNewTask({ title: "", description: "", dueDate: "" });
     } catch (error) {
       console.error("Error adding task:", error.message);
       setError(error.message);
@@ -122,13 +119,13 @@ function TaskScreen() {
           task._id === updatedTaskData._id ? updatedTaskData : task
         )
       );
-      setTaskToUpdate(null); // Close the update form
+      setTaskToUpdate(null);
       setUpdatedTask({
         title: "",
         description: "",
         dueDate: "",
         status: "Pending",
-      }); // Reset update form
+      });
     } catch (error) {
       console.error("Error updating task:", error.message);
       setError(error.message);
@@ -161,11 +158,15 @@ function TaskScreen() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div
+      className={`flex h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
+    >
       <Sidebar />
-      <div className="flex-1 overflow-y-auto p-8">
-        <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">Task Manager</h1>
+      <div className={`flex-1 overflow-y-auto p-8 ${theme === "dark" ? "bg-gray-800" : "bg-white"}`}>
+        <div className={`max-w-3xl mx-auto shadow-md rounded-lg p-6 ${theme === "dark" ? "bg-gray-700" : "bg-white"}`}>
+          <h1 className="text-2xl font-bold mb-6">
+            Task Manager
+          </h1>
 
           <button
             onClick={() => setShowForm(true)}
@@ -185,36 +186,36 @@ function TaskScreen() {
                 }}
               >
                 <div className="mb-4">
-                  <label className="block text-gray-700">Title</label>
+                  <label className="block">Title</label>
                   <input
                     type="text"
                     value={newTask.title}
                     onChange={(e) =>
                       setNewTask({ ...newTask, title: e.target.value })
                     }
-                    className="w-full border rounded-lg p-2"
+                    className={`w-full border rounded-lg p-2 ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
                     required
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700">Description</label>
+                  <label className="block">Description</label>
                   <textarea
                     value={newTask.description}
                     onChange={(e) =>
                       setNewTask({ ...newTask, description: e.target.value })
                     }
-                    className="w-full border rounded-lg p-2"
+                    className={`w-full border rounded-lg p-2 ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
                   ></textarea>
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700">Due Date</label>
+                  <label className="block">Due Date</label>
                   <input
                     type="date"
                     value={newTask.dueDate}
                     onChange={(e) =>
                       setNewTask({ ...newTask, dueDate: e.target.value })
                     }
-                    className="w-full border rounded-lg p-2"
+                    className={`w-full border rounded-lg p-2 ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
                     required
                   />
                 </div>
@@ -245,19 +246,19 @@ function TaskScreen() {
                 }}
               >
                 <div className="mb-4">
-                  <label className="block text-gray-700">Title</label>
+                  <label className="block">Title</label>
                   <input
                     type="text"
                     value={updatedTask.title}
                     onChange={(e) =>
                       setUpdatedTask({ ...updatedTask, title: e.target.value })
                     }
-                    className="w-full border rounded-lg p-2"
+                    className={`w-full border rounded-lg p-2 ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
                     required
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700">Description</label>
+                  <label className="block">Description</label>
                   <textarea
                     value={updatedTask.description}
                     onChange={(e) =>
@@ -266,11 +267,11 @@ function TaskScreen() {
                         description: e.target.value,
                       })
                     }
-                    className="w-full border rounded-lg p-2"
+                    className={`w-full border rounded-lg p-2 ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
                   ></textarea>
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700">Due Date</label>
+                  <label className="block">Due Date</label>
                   <input
                     type="date"
                     value={updatedTask.dueDate}
@@ -280,27 +281,29 @@ function TaskScreen() {
                         dueDate: e.target.value,
                       })
                     }
-                    className="w-full border rounded-lg p-2"
-                    required
+                    className={`w-full border rounded-lg p-2 ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700">Status</label>
+                  <label className="block">Status</label>
                   <select
                     value={updatedTask.status}
                     onChange={(e) =>
-                      setUpdatedTask({ ...updatedTask, status: e.target.value })
+                      setUpdatedTask({
+                        ...updatedTask,
+                        status: e.target.value,
+                      })
                     }
-                    className="w-full border rounded-lg p-2"
+                    className={`w-full border rounded-lg p-2 ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
                   >
                     <option value="Pending">Pending</option>
-                    <option value="In Progress">In Progress</option>
                     <option value="Completed">Completed</option>
+                    <option value="In Progress">In Progress</option>
                   </select>
                 </div>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
                 >
                   Update Task
                 </button>
@@ -314,53 +317,58 @@ function TaskScreen() {
             </div>
           )}
 
+          {/* Display Tasks */}
           {loading ? (
-            <p>Loading tasks...</p>
+            <div className="text-center text-gray-500">Loading...</div>
           ) : error ? (
-            <p className="text-red-500">Error: {error}</p>
-          ) : tasks.length > 0 ? (
-            <ul className="divide-y divide-gray-200">
-              {tasks.map((task) => (
-                <li
-                  key={task._id}
-                  className="px-4 py-4 sm:px-6 hover:bg-gray-50 flex justify-between items-center"
-                >
-                  <div>
-                    <p className="text-lg font-medium text-gray-900">{task.title}</p>
-                    <p className="text-sm text-gray-500">
-                      Due Date: {format(new Date(task.dueDate), "yyyy-MM-dd")}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Status: {task.status || "Pending"}
-                    </p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <button
-                      onClick={() => deleteTask(task._id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => {
-                        setTaskToUpdate(task);
-                        setUpdatedTask({
-                          title: task.title,
-                          description: task.description,
-                          dueDate: task.dueDate,
-                          status: task.status || "Pending",
-                        });
-                      }}
-                      className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600"
-                    >
-                      Update
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <div className="text-center text-red-500">{error}</div>
           ) : (
-            <p>No tasks available</p>
+            <div className="space-y-4">
+              {tasks.map((task) => (
+                <div
+                  key={task._id}
+                  className={`border p-4 rounded-lg ${theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"}`}
+                >
+                  <div className="flex justify-between items-center">
+                    <h3
+                      className="text-xl font-semibold"
+                      style={{ color: theme === "dark" ? "white" : "black" }}
+                    >
+                      {task.title}
+                    </h3>
+                    <div>
+                      <button
+                        onClick={() => {
+                          setTaskToUpdate(task);
+                          setUpdatedTask({
+                            title: task.title,
+                            description: task.description,
+                            dueDate: task.dueDate,
+                            status: task.status,
+                          });
+                        }}
+                        className="text-blue-500 hover:underline mr-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteTask(task._id)}
+                        className="text-red-500 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <p className="text-gray-500">{task.description}</p>
+                  <p className="text-gray-400">
+                    Due: {format(new Date(task.dueDate), "MMMM dd, yyyy")}
+                  </p>
+                  <p className={`text-${task.status === "Completed" ? "green" : task.status === "Pending" ? "yellow" : "blue"}-500`}>
+                    {task.status}
+                  </p>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>

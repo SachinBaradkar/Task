@@ -1,0 +1,59 @@
+/* Snowflake animation */
+@keyframes snowflakes {
+    0% {
+        top: -10%;
+        opacity: 1;
+    }
+
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+.snowflakes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+    /* Ensures snowflakes stay inside the sidebar */
+}
+
+.snowflake {
+    position: absolute;
+    color: white !important;
+    /* Ensure white color */
+    font-size: 1.2rem;
+    /* Smaller snowflakes */
+    animation: snowflakes linear infinite;
+    opacity: 0.8;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    /* Subtle white shadow for visibility */
+    z-index: 2;
+}
+
+/* Ensuring snowflakes do not pair, each has its own random animation duration */
+.snowflake:nth-child(odd) {
+    font-size: 0.5rem;
+    /* Smaller snowflakes */
+    animation-duration: 10s;
+    animation-delay: -2s;
+}
+
+.snowflake:nth-child(even) {
+    font-size: 0.7rem;
+    /* Same smaller snowflakes */
+    animation-duration: 12s;
+    animation-delay: -4s;
+}
+
+.snowflake:nth-child(3n) {
+    font-size: 1rem;
+    /* Even smaller snowflakes */
+    animation-duration: 15s;
+    animation-delay: -6s;
+}

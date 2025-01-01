@@ -11,7 +11,7 @@ function LoginOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const successMessage = location.state?.successMessage || '';
+  const successMessage = location.state?.successMessage || ''; // Retrieve success message from state
 
   const isValidEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
