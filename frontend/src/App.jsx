@@ -7,7 +7,7 @@ import TaskScreen from "./Pages/TaskScreen";
 import Analytics from "./Pages/Analytics";
 import FileUpload from "./Pages/FileUpload";
 import Header from "./components/Header";
-import Snowflakes from "./Components/Snowflakes"; // Import the Snowflakes component
+import Snowflakes from "./components/Snowflakes"; // Import the Snowflakes component
 
 function App() {
   // State to manage theme
