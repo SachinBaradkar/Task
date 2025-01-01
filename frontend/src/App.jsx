@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import LoginOtpPage from "./Pages/LoginOtpPage";
 import OtpVerificationPage from "./Pages/OtpVerificationPage";
-import Dashboard from "./Pages/Dashboard";
+import Dashboard from "./Pages/dashboard";
 import TaskScreen from "./Pages/TaskScreen";
 import Analytics from "./Pages/Analytics";
 import FileUpload from "./Pages/FileUpload";
-import Header from "./Components/Header";
+import Header from "./components/Header";
 import Snowflakes from "./Components/Snowflakes"; // Import the Snowflakes component
 
 function App() {
