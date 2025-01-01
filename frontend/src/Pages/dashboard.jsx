@@ -1,6 +1,6 @@
 import React from "react";
-import Sidebar from "../Components/Sidebar";
-import Summary from "../Components/Summary";
+import Sidebar from "../components/Sidebar";
+import Summary from "../components/Summary";
 import TaskList from "../Components/TaskList";
 import Analytics from "../Components/Analytics";
 
