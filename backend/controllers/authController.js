@@ -42,7 +42,7 @@ exports.sendOTP = async (req, res) => {
 
   try {
     const otp = generateOTP();
-    const otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes
+    const otpExpiry = Date.now() + 1 * 60 * 1000; // 1 minute
 
     let admin = await Admin.findOne({ email });
     if (!admin) {
