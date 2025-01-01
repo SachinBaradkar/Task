@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../Components/Sidebar";
 import axios from "axios";
 import "./FileUpload.css";
 
