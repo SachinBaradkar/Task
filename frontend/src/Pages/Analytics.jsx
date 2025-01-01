@@ -42,7 +42,7 @@ export default function Analytics() {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No authentication token found. Please log in.");
 
-      const response = await fetch("http://localhost:5000/api/tasks/weekly-analysis", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks/weekly-analysis", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export default function Analytics() {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No authentication token found. Please log in.");
 
-      const response = await fetch("http://localhost:5000/api/tasks/statistics", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks/statistics", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +101,7 @@ export default function Analytics() {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No authentication token found. Please log in.");
 
-      const response = await fetch("http://localhost:5000/api/tasks/overview", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks/overview", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

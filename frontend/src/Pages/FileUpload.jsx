@@ -11,7 +11,7 @@ const FileUpload = ({ theme }) => {
     // Fetch files from the server
     const fetchFiles = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/api/files/", {
+            const response = await axios.get("https://task-586i.onrender.com/api/files/", {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
@@ -39,7 +39,7 @@ const FileUpload = ({ theme }) => {
         });
 
         try {
-            const response = await axios.post("http://localhost:5000/api/files/upload", formData, {
+            const response = await axios.post("https://task-586i.onrender.com/api/files/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     "Authorization": `Bearer ${token}`,
@@ -55,7 +55,7 @@ const FileUpload = ({ theme }) => {
     // Handle file deletion
     const handleDelete = async (fileId) => {
         try {
-            await axios.delete(`http://localhost:5000/api/files/${fileId}`, {
+            await axios.delete(`https://task-586i.onrender.com/api/files/${fileId}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
