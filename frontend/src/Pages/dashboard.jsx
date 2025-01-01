@@ -1,3 +1,4 @@
+// Dashboard.jsx
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom"; // Importing useLocation
 import Sidebar from "../Components/Sidebar";
@@ -20,7 +21,7 @@ function Dashboard({ theme }) {
 
   return (
     <div className={`flex h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
-      <Sidebar />
+      <Sidebar theme={theme} /> {/* Pass theme prop to Sidebar */}
       <main className="flex-1 overflow-y-auto p-8">
         <div className="space-y-8">
           <Summary />
@@ -34,7 +35,6 @@ function Dashboard({ theme }) {
           </div>
         </div>
       </main>
-
     </div>
   );
 }

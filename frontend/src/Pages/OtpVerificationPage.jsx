@@ -75,9 +75,9 @@ function OtpVerificationPage() {
       <ToastContainer position="bottom-center" autoClose={3000} />
       <div className="background-rectangle">
         <div className="left-card">
-          <img src="/cleverpe_logo.jpg" alt="Logo" className="logo" />
+          <img src="/cleverpe_logo.png" alt="Logo" className="logo" />
           <h1>WELCOME</h1>
-          <p>to the CleverPe Admin Dashboard !!</p>
+          <p>to the CleverPe Task Manager !!</p>
         </div>
         <div className="right-content">
           <h1>Login</h1>

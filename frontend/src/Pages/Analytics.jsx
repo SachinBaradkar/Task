@@ -17,8 +17,9 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
 } from "recharts";
+import "./Analytics.css";
 
-export default function Analytics() {
+export default function Analytics({ theme }) {
   const [weeklyData, setWeeklyData] = useState([]);
   const [statisticsData, setStatisticsData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
@@ -128,10 +129,11 @@ export default function Analytics() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 overflow-y-auto p-8">
-        <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Task Analytics</h3>
+    <div className={`flex h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900"}`}>
+      <Sidebar theme={theme} />
+      <div className={`flex-1 overflow-y-auto p-8 ${theme === "light" ? "text-gray-900" : "text-gray-100"}`}>
+        <h3 className={`text-lg font-medium leading-6 mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"
+          }`}>Task Analytics</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {loading ? (
             <p>Loading analytics...</p>
@@ -141,15 +143,15 @@ export default function Analytics() {
             <>
               {/* Weekly Task Status */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Weekly Task Status</h4>
+                <h4 className="text-md font-medium mb-2">Weekly Task Status</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={weeklyData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
+                      <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "#ccc" : "#444"} />
+                      <XAxis dataKey="name" stroke={theme === "light" ? "#000" : "#fff"} />
+                      <YAxis stroke={theme === "light" ? "#000" : "#fff"} />
+                      <Tooltip contentStyle={{ backgroundColor: theme === "light" ? "#fff" : "#333", color: theme === "light" ? "#000" : "#fff" }} />
+                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
                       <Bar dataKey="completed" fill="#10B981" name="Completed" />
                       <Bar dataKey="inProgress" fill="#3B82F6" name="In Progress" />
                       <Bar dataKey="pending" fill="#F59E0B" name="Pending" />
@@ -160,15 +162,15 @@ export default function Analytics() {
 
               {/* Task Summary */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Task Summary</h4>
+                <h4 className="text-md font-medium mb-2">Task Summary</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={statisticsData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
+                      <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "#ccc" : "#444"} />
+                      <XAxis dataKey="name" stroke={theme === "light" ? "#000" : "#fff"} />
+                      <YAxis stroke={theme === "light" ? "#000" : "#fff"} />
+                      <Tooltip contentStyle={{ backgroundColor: theme === "light" ? "#fff" : "#333", color: theme === "light" ? "#000" : "#fff" }} />
+                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
                       <Bar dataKey="count" fill="#6366F1" name="Tasks" />
                     </BarChart>
                   </ResponsiveContainer>
@@ -177,15 +179,15 @@ export default function Analytics() {
 
               {/* Monthly Overview */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Monthly Task Overview</h4>
+                <h4 className="text-md font-medium mb-2">Monthly Task Overview</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={monthlyData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
+                      <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "#ccc" : "#444"} />
+                      <XAxis dataKey="month" stroke={theme === "light" ? "#000" : "#fff"} />
+                      <YAxis stroke={theme === "light" ? "#000" : "#fff"} />
+                      <Tooltip contentStyle={{ backgroundColor: theme === "light" ? "#fff" : "#333", color: theme === "light" ? "#000" : "#fff" }} />
+                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
                       <Line dataKey="created" stroke="#3B82F6" name="Created Tasks" />
                       <Line dataKey="completed" stroke="#10B981" name="Completed Tasks" />
                     </LineChart>
@@ -195,13 +197,13 @@ export default function Analytics() {
 
               {/* Weekly Task Distribution */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Weekly Task Distribution</h4>
+                <h4 className="text-md font-medium mb-2">Weekly Task Distribution</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart outerRadius={90} data={weeklyData}>
-                      <PolarGrid />
-                      <PolarAngleAxis dataKey="name" />
-                      <PolarRadiusAxis />
+                      <PolarGrid stroke={theme === "light" ? "#ccc" : "#444"} />
+                      <PolarAngleAxis dataKey="name" stroke={theme === "light" ? "#000" : "#fff"} />
+                      <PolarRadiusAxis stroke={theme === "light" ? "#000" : "#fff"} />
                       <Radar
                         name="Completed"
                         dataKey="completed"
@@ -223,8 +225,9 @@ export default function Analytics() {
                         fill="#F59E0B"
                         fillOpacity={0.6}
                       />
-                      <Legend />
+                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
                     </RadarChart>
+
                   </ResponsiveContainer>
                 </div>
               </div>

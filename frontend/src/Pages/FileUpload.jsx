@@ -4,17 +4,17 @@ import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import "./FileUpload.css";
 
-const FileUpload = () => {
+const FileUpload = ({ theme }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    const token = localStorage.getItem("authToken");  // Assuming the token is stored in localStorage
+    const token = localStorage.getItem("authToken"); // Assuming the token is stored in localStorage
 
     // Fetch files from the server
     const fetchFiles = async () => {
         try {
             const response = await axios.get("http://localhost:5000/api/files/", {
                 headers: {
-                    "Authorization": `Bearer ${token}`,  // Include the token in the Authorization header
-                }
+                    "Authorization": `Bearer ${token}`,
+                },
             });
             setUploadedFiles(response.data);
         } catch (error) {
@@ -30,23 +30,23 @@ const FileUpload = () => {
     const onDrop = async (acceptedFiles) => {
         const formData = new FormData();
         acceptedFiles.forEach((file) => {
-            formData.append("file", file);  // Ensure the field name 'file' matches what the backend expects
-            formData.append("fileName", file.name);  // Add fileName for the backend
-            formData.append("fileType", file.type);  // Add fileType for the backend
-            formData.append("fileSize", file.size);  // Add fileSize for the backend
-            formData.append("uploadedBy", "user@example.com");  // Modify as per actual user data
-            formData.append("filePath", `uploads/${file.name}`);  // Example, modify as per storage path
+            formData.append("file", file);
+            formData.append("fileName", file.name);
+            formData.append("fileType", file.type);
+            formData.append("fileSize", file.size);
+            formData.append("uploadedBy", "user@example.com");
+            formData.append("filePath", `uploads/${file.name}`);
         });
 
         try {
             const response = await axios.post("http://localhost:5000/api/files/upload", formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data",  // Ensure proper content type
-                    "Authorization": `Bearer ${token}`,  // Include the token in the Authorization header
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${token}`,
                 },
             });
-            console.log('File uploaded successfully:', response.data);
-            fetchFiles(); // Refresh the file list
+            console.log("File uploaded successfully:", response.data);
+            fetchFiles();
         } catch (error) {
             console.error("Error uploading file:", error.response ? error.response.data : error.message);
         }
@@ -57,10 +57,10 @@ const FileUpload = () => {
         try {
             await axios.delete(`http://localhost:5000/api/files/${fileId}`, {
                 headers: {
-                    "Authorization": `Bearer ${token}`,  // Include the token in the Authorization header
-                }
+                    "Authorization": `Bearer ${token}`,
+                },
             });
-            fetchFiles(); // Refresh the file list
+            fetchFiles();
         } catch (error) {
             console.error("Error deleting file:", error.response ? error.response.data : error.message);
         }
@@ -72,13 +72,16 @@ const FileUpload = () => {
     });
 
     return (
-        <div className="flex h-screen bg-gray-100">
-            <Sidebar />
+        <div className={`flex h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
+            <Sidebar theme={theme} />
             <div className="file-upload-container flex-1 p-6">
-                <h1>Upload Documents</h1>
+                <h1 className="text-2xl font-bold mb-4">Upload Documents</h1>
                 <div
                     {...getRootProps()}
-                    className={`dropzone ${isDragActive ? "active" : ""}`}
+                    className={`dropzone border-2 rounded-md p-6 text-center cursor-pointer ${theme === "dark"
+                        ? "bg-gray-800 border-gray-600 text-gray-300"
+                        : "bg-white border-gray-300 text-gray-700"
+                        } ${isDragActive ? (theme === "dark" ? "bg-gray-700" : "bg-gray-200") : ""}`}
                 >
                     <input {...getInputProps()} />
                     {isDragActive ? (
@@ -89,28 +92,32 @@ const FileUpload = () => {
                 </div>
 
                 {uploadedFiles.length > 0 && (
-                    <table className="file-table">
+                    <table
+                        className={`file-table w-full mt-6 border-collapse ${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                            }`}
+                    >
                         <thead>
                             <tr>
-                                <th>File Name</th>
-                                <th>File Type</th>
-                                <th>Upload Date</th>
-                                <th>Uploaded By</th>
-                                <th>File Size</th>
-                                <th>Action</th>
+                                <th className="border-b p-2">File Name</th>
+                                <th className="border-b p-2">File Type</th>
+                                <th className="border-b p-2">Upload Date</th>
+                                <th className="border-b p-2">Uploaded By</th>
+                                <th className="border-b p-2">File Size</th>
+                                <th className="border-b p-2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {uploadedFiles.map((file) => (
                                 <tr key={file._id}>
-                                    <td>{file.fileName}</td>
-                                    <td>{file.fileType}</td>
-                                    <td>{new Date(file.uploadDate).toLocaleString()}</td>
-                                    <td>{file.uploadedBy}</td>
-                                    <td>{(file.fileSize / 1024).toFixed(2)} KB</td>
-                                    <td>
+                                    <td className="border-b p-2">{file.fileName}</td>
+                                    <td className="border-b p-2">{file.fileType}</td>
+                                    <td className="border-b p-2">{new Date(file.uploadDate).toLocaleString()}</td>
+                                    <td className="border-b p-2">{file.uploadedBy}</td>
+                                    <td className="border-b p-2">{(file.fileSize / 1024).toFixed(2)} KB</td>
+                                    <td className="border-b p-2">
                                         <button
-                                            className="delete-button"
+                                            className={`delete-button p-2 rounded ${theme === "dark" ? "bg-red-600 text-white" : "bg-red-500 text-white"
+                                                } hover:opacity-75`}
                                             onClick={() => handleDelete(file._id)}
                                         >
                                             Delete

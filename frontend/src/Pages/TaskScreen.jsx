@@ -161,7 +161,7 @@ function TaskScreen({ theme }) {
     <div
       className={`flex h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
     >
-      <Sidebar />
+      <Sidebar theme={theme} />
       <div className={`flex-1 overflow-y-auto p-8 ${theme === "dark" ? "bg-gray-800" : "bg-white"}`}>
         <div className={`max-w-3xl mx-auto shadow-md rounded-lg p-6 ${theme === "dark" ? "bg-gray-700" : "bg-white"}`}>
           <h1 className="text-2xl font-bold mb-6">

@@ -29,28 +29,35 @@
 }
 
 /* Left Card Section */
+/* Left Card Section */
 .left-card {
     position: absolute;
     left: 20px;
-    /* Push the card inside the background rectangle */
     top: 50%;
     transform: translateY(-50%);
     background-color: #158380;
-    /* Greenish background */
     color: white;
     width: 35%;
-    /* Card width */
     height: 90%;
-    /* Card height */
     border-radius: 15px;
-    /* Rounded corners */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    /* Soft shadow */
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    /* Center content horizontally */
 }
+
+/* Adjust logo size */
+.logo {
+    width: 100px;
+    /* Increase logo size */
+    height: auto;
+    margin-bottom: 20px;
+    /* Add space between logo and text */
+}
+
 
 .left-card h1 {
     margin: 0;
@@ -62,13 +69,8 @@
     font-size: 1.2em;
 }
 
-.logo {
-    width: 100px;
-    /* Adjust size as needed */
-    height: auto;
-    margin: 0 auto;
-    display: block;
-}
+
+
 
 /* Right Content Section */
 .right-content {

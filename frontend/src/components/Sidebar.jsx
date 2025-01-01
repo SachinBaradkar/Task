@@ -1,3 +1,4 @@
+// Sidebar.jsx
 import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -11,7 +12,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import './SnowflakeAnimation.css';
 
-export default function Sidebar() {
+export default function Sidebar({ theme }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -63,28 +64,19 @@ export default function Sidebar() {
     }
   };
 
-  useEffect(() => {
-    // Create snowflakes on component mount
-    const snowflakeContainer = document.querySelector('.snowflakes');
-    const snowflakeCount = 7; // Reduced number of snowflakes to 15
-
-    for (let i = 0; i < snowflakeCount; i++) {
-      const snowflake = document.createElement('span');
-      snowflake.classList.add('snowflake');
-      snowflake.textContent = '❄'; // Snowflake character
-      snowflake.style.left = `${Math.random() * 100}%`;
-      snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
-      snowflake.style.animationDelay = `${Math.random() * 5}s`;
-      snowflakeContainer.appendChild(snowflake);
-    }
-  }, []);
+  const sidebarBackground = theme === 'light' ? '#158380' : '#1a202c'; // Light: #158380, Dark: #1a202c
+  const textColor = theme === 'light' ? 'text-white' : 'text-gray-300';
+  const hoverColor = theme === 'light' ? 'hover:bg-green-700' : 'hover:bg-gray-700 hover:text-white';
+  const activeBgColor = theme === 'light' ? 'bg-green-800' : 'bg-gray-900';
+  const activeTextColor = 'text-white'; // Always white text for active items
 
   return (
-    <div className="relative flex h-full flex-col w-64" style={{ backgroundColor: '#158380' }}>
+    <div
+      className="relative flex h-full flex-col w-64"
+      style={{ backgroundColor: sidebarBackground }}
+    >
       <div className="snowflakes"></div> {/* Snowflakes container */}
-      <div className="flex h-16 items-center px-4">
-        <h1 className="text-white text-xl font-bold">Task Manager</h1>
-      </div>
+
       <nav className="flex-1 space-y-1 px-2 py-4">
         {navigation.map((item) => {
           const isActive = location.pathname === item.href;
@@ -93,8 +85,8 @@ export default function Sidebar() {
               key={item.name}
               to={item.href}
               className={`flex items-center px-2 py-2 text-sm font-medium rounded-md ${isActive
-                ? 'bg-gray-900 text-white'
-                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                ? `${activeBgColor} ${activeTextColor}`
+                : `${textColor} ${hoverColor}`
                 }`}
             >
               <item.icon className="mr-3 h-6 w-6 flex-shrink-0" aria-hidden="true" />
@@ -106,7 +98,7 @@ export default function Sidebar() {
 
       <div className="mt-auto px-4 py-2">
         <button
-          className="text-white bg-red-600 p-2 rounded-md w-full flex items-center justify-center"
+          className={`p-2 rounded-md w-full flex items-center justify-center bg-red-600 ${textColor}`}
           onClick={handleLogout}
         >
           <ArrowLeftOnRectangleIcon className="h-6 w-6 mr-2" />

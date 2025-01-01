@@ -17,15 +17,31 @@
 }
 
 .left-card {
-    width: 30%;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     background-color: #158380;
-    color: #fff;
+    color: white;
+    width: 35%;
+    height: 90%;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
-    border-radius: 20px 0 0 20px;
+    align-items: center;
+    /* Center content horizontally */
+}
+
+/* Adjust logo size */
+.logo {
+    width: 100px;
+    /* Increase logo size */
+    height: auto;
+    margin-bottom: 20px;
+    /* Add space between logo and text */
 }
 
 .left-card h1 {

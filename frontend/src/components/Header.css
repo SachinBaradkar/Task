@@ -2,8 +2,10 @@
 .header {
     padding: 10px;
     display: flex;
-    justify-content: space-between;
+
+    /* This will move the theme toggle to the right */
     align-items: center;
+    /* Align items vertically in the center */
     transition: background-color 0.3s ease;
 }
 
@@ -19,14 +21,34 @@
     color: white;
 }
 
+/* Styling for the logo */
+.header-logo {
+    width: 40px;
+    /* Adjust size as needed */
+    height: auto;
+    margin-right: 15px;
+    /* Space between logo and title */
+}
+
 .header-title {
     margin: 0;
     font-size: 24px;
     font-weight: bold;
+    display: inline;
+    /* Ensures title stays next to the logo */
 }
+
+
 
 .theme-toggle {
     cursor: pointer;
     font-size: 20px;
     user-select: none;
+    position: absolute;
+    /* Positioning the button */
+    right: 10px;
+    /* Distance from the right edge */
+
+    /* Vertically center */
+
 }
