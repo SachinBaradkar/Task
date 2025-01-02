@@ -8,7 +8,7 @@ const { generateOTP } = require("../utils/otpGenerator");
 const { addToBlacklist } = require("../utils/blacklist");
 
 // Whitelisted Emails
-const WHITELISTED_EMAILS = ["satheshravani1024@gmail.com","rohitraut2612@gmail.com","sachinsbaradkar@gmail.com","thoratshailesh220@gmail.com", "suryawanshitanvi468@gmail.com", "Tabish@cleverpe.com", "Fida@cleverpe.com"]; // Add allowed emails here
+const WHITELISTED_EMAILS = ["satheshravani1024@gmail.com","rohitraut2612@gmail.com","sachinsbaradkar@gmail.com","thoratshailesh220@gmail.com", "suryawanshitanvi468@gmail.com", "Tabish@cleverpe.com", "Fida@cleverpe.com","shravanirsathe@gmail.com"]; // Add allowed emails here
 
 // Set up nodemailer transporter with your email provider's settings using environment variables
 const transporter = nodemailer.createTransport({
