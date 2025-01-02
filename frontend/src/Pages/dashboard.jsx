@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom"; // Importing useLocation
 // import Sidebar from "../Components/Sidebar";
-import Sidebar from "./Components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import Summary from "../Components/Summary";
 import TaskList from "../Components/TaskList";
 import Analytics from "../Components/Analytics";
