@@ -11,7 +11,7 @@ function LoginOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const successMessage = location.state?.successMessage || ''; // Retrieve success message from state
+  const successMessage = location.state?.successMessage || ""; // Retrieve success message from state
 
   const isValidEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -32,12 +32,20 @@ function LoginOtpPage() {
       const response = await axios.post("https://task-586i.onrender.com/api/auth/send-otp", { email });
       if (response.data.message === "OTP sent successfully") {
         navigate("/verify-otp", { state: { email, successMessage: "OTP sent to your email." } });
+      } else if (response.data.message === "Cannot send OTP to this email address") {
+        toast.error("This email is unauthorized, OTP cannot be sent to this email.", { position: "bottom-center", autoClose: 3000 });
       } else {
         toast.error(response.data.message || "Failed to send OTP.", { position: "bottom-center", autoClose: 3000 });
       }
     } catch (error) {
-      toast.error("Error sending OTP. Please try again.", { position: "bottom-center", autoClose: 3000 });
-    } finally {
+      if (error.response && error.response.status === 403) {
+        // Specific handling for 403 Forbidden
+        toast.error("Email unauthorized, OTP cannot be sent to this email.", { position: "bottom-center", autoClose: 3000 });
+      } else {
+        toast.error("Error sending OTP. Please try again.", { position: "bottom-center", autoClose: 3000 });
+      }
+    } 
+     finally {
       setLoading(false);
     }
   };
