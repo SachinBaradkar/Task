@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import Sidebar from "../Components/Sidebar";
-import Sidebar from "./Components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import {
   BarChart,
   Bar,
