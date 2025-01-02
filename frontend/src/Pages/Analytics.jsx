@@ -21,7 +21,7 @@ import {
 import { jsPDF } from "jspdf";
 import Papa from "papaparse";
 
-export default function Analytics() {
+export default function Analytics({ theme }) {
   const [weeklyData, setWeeklyData] = useState([]);
   const [statisticsData, setStatisticsData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
@@ -189,23 +189,48 @@ export default function Analytics() {
     doc.save("analytics_data.pdf");
   };
 
+  const themeColors = theme === "dark" ? {
+    background: "bg-gray-800",
+    text: "text-white",
+    border: "border-gray-700",
+    chartBar1: "#10B981", // green
+    chartBar2: "#3B82F6", // blue
+    chartBar3: "#F59E0B", // yellow
+    chartLine1: "#3B82F6", // blue
+    chartLine2: "#10B981", // green
+    chartRadar1: "#10B981", // green
+    chartRadar2: "#3B82F6", // blue
+    chartRadar3: "#F59E0B"  // yellow
+  } : {
+    background: "bg-gray-100",
+    text: "text-gray-900",
+    border: "border-gray-300",
+    chartBar1: "#10B981", // green
+    chartBar2: "#3B82F6", // blue
+    chartBar3: "#F59E0B", // yellow
+    chartLine1: "#3B82F6", // blue
+    chartLine2: "#10B981", // green
+    chartRadar1: "#10B981", // green
+    chartRadar2: "#3B82F6", // blue
+    chartRadar3: "#F59E0B"  // yellow
+  };
+
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
+    <div className={`flex h-screen ${themeColors.background}`}>
+      <Sidebar theme={theme} />
       <div className="flex-1 overflow-y-auto p-8">
-        {/* <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Task Analytics</h3> */}
         <div className="flex gap-4 mb-4">
           <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="border rounded p-2"
+            className={`border ${themeColors.border} rounded p-2`}
           />
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="border rounded p-2"
+            className={`border ${themeColors.border} rounded p-2`}
           />
           <button onClick={downloadCSV} className="bg-blue-500 text-white p-2 rounded">
             Download CSV
@@ -223,7 +248,7 @@ export default function Analytics() {
             <>
               {/* Weekly Task Status */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Weekly Task Status</h4>
+                <h4 className={`text-md font-medium ${themeColors.text} mb-2`}>Weekly Task Status</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={weeklyData}>
@@ -232,9 +257,9 @@ export default function Analytics() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="completed" fill="#10B981" name="Completed" />
-                      <Bar dataKey="inProgress" fill="#3B82F6" name="In Progress" />
-                      <Bar dataKey="pending" fill="#F59E0B" name="Pending" />
+                      <Bar dataKey="completed" fill={themeColors.chartBar1} name="Completed" />
+                      <Bar dataKey="inProgress" fill={themeColors.chartBar2} name="In Progress" />
+                      <Bar dataKey="pending" fill={themeColors.chartBar3} name="Pending" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -242,7 +267,7 @@ export default function Analytics() {
 
               {/* Task Summary */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Task Summary</h4>
+                <h4 className={`text-md font-medium ${themeColors.text} mb-2`}>Task Summary</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={statisticsData}>
@@ -251,7 +276,7 @@ export default function Analytics() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="count" fill="#6366F1" name="Tasks" />
+                      <Bar dataKey="count" fill={themeColors.chartBar1} name="Tasks" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -259,7 +284,7 @@ export default function Analytics() {
 
               {/* Monthly Overview */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Monthly Task Overview</h4>
+                <h4 className={`text-md font-medium ${themeColors.text} mb-2`}>Monthly Task Overview</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={monthlyData}>
@@ -268,44 +293,29 @@ export default function Analytics() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Line dataKey="created" stroke="#3B82F6" name="Created Tasks" />
-                      <Line dataKey="completed" stroke="#10B981" name="Completed Tasks" />
+                      <Line dataKey="created" stroke={themeColors.chartLine1} name="Created Tasks" />
+                      <Line dataKey="completed" stroke={themeColors.chartLine2} name="Completed Tasks" />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
-              {/* Weekly Task Distribution */}
+              {/* Task Distribution */}
               <div className="mb-8">
-                <h4 className="text-md font-medium text-gray-700 mb-2">Weekly Task Distribution</h4>
+                <h4 className={`text-md font-medium ${themeColors.text} mb-2`}>Task Distribution</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart outerRadius={90} data={weeklyData}>
+                    <RadarChart outerRadius="80%" width={730} height={250} data={statisticsData}>
                       <PolarGrid />
                       <PolarAngleAxis dataKey="name" />
-                      <PolarRadiusAxis />
+                      <PolarRadiusAxis angle={30} domain={[0, 10]} />
                       <Radar
-                        name="Completed"
-                        dataKey="completed"
-                        stroke="#10B981"
-                        fill="#10B981"
+                        name="Completed Tasks"
+                        dataKey="count"
+                        stroke={themeColors.chartRadar1}
+                        fill={themeColors.chartRadar1}
                         fillOpacity={0.6}
                       />
-                      <Radar
-                        name="In Progress"
-                        dataKey="inProgress"
-                        stroke="#3B82F6"
-                        fill="#3B82F6"
-                        fillOpacity={0.6}
-                      />
-                      <Radar
-                        name="Pending"
-                        dataKey="pending"
-                        stroke="#F59E0B"
-                        fill="#F59E0B"
-                        fillOpacity={0.6}
-                      />
-                      <Legend />
                     </RadarChart>
                   </ResponsiveContainer>
                 </div>
