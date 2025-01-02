@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom"; // Importing useLocation
 // import Sidebar from "../Components/Sidebar";
 import Sidebar from "../components/Sidebar";
-import Summary from "../Components/Summary";
-import TaskList from "../Components/TaskList";
-import Analytics from "../Components/Analytics";
+import Summary from "../components/Summary";
+import TaskList from "../components/TaskList";
+import Analytics from "../components/Analytics";
 import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer
 import "react-toastify/dist/ReactToastify.css";
 
