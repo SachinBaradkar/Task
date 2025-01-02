@@ -34,7 +34,7 @@ export default function Sidebar({ theme }) {
 
       // Make the logout request
       const response = await axios.post(
-        'http://localhost:5000/api/auth/logout',
+        'https://task-586i.onrender.com/api/auth/logout',
         {},
         {
           headers: {

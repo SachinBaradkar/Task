@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar";
+// import Sidebar from "../Components/Sidebar";
+import Sidebar from "../Components/Sidebar";
 import {
   BarChart,
   Bar,
@@ -17,12 +18,15 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
 } from "recharts";
-import "./Analytics.css";
+import { jsPDF } from "jspdf";
+import Papa from "papaparse";
 
-export default function Analytics({ theme }) {
+export default function Analytics() {
   const [weeklyData, setWeeklyData] = useState([]);
   const [statisticsData, setStatisticsData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -39,7 +43,7 @@ export default function Analytics({ theme }) {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No authentication token found. Please log in.");
 
-      const response = await fetch("http://localhost:5000/api/tasks/weekly-analysis", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks/weekly-analysis", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +74,7 @@ export default function Analytics({ theme }) {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No authentication token found. Please log in.");
 
-      const response = await fetch("http://localhost:5000/api/tasks/statistics", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks/statistics", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +102,7 @@ export default function Analytics({ theme }) {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No authentication token found. Please log in.");
 
-      const response = await fetch("http://localhost:5000/api/tasks/overview", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks/overview", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -128,12 +132,88 @@ export default function Analytics({ theme }) {
     }
   };
 
+  const downloadCSV = () => {
+    const allData = [
+      ...weeklyData.map((d) => ({ category: "Weekly", ...d })),
+      ...statisticsData.map((d) => ({ category: "Statistics", ...d })),
+      ...monthlyData.map((d) => ({ category: "Monthly", ...d })),
+    ];
+    const csv = Papa.unparse(allData);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "analytics_data.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Analytics Data", 10, 10);
+
+    let y = 20;
+
+    // Weekly Data
+    doc.text("Weekly Data:", 10, y);
+    y += 10;
+    weeklyData.forEach((item) => {
+      doc.text(
+        `Name: ${item.name}, Completed: ${item.completed}, In Progress: ${item.inProgress}, Pending: ${item.pending}`,
+        10,
+        y
+      );
+      y += 10;
+    });
+
+    // Statistics Data
+    y += 10;
+    doc.text("Statistics Data:", 10, y);
+    y += 10;
+    statisticsData.forEach((item) => {
+      doc.text(`Name: ${item.name}, Count: ${item.count}`, 10, y);
+      y += 10;
+    });
+
+    // Monthly Data
+    y += 10;
+    doc.text("Monthly Data:", 10, y);
+    y += 10;
+    monthlyData.forEach((item) => {
+      doc.text(`Month: ${item.month}, Created: ${item.created}, Completed: ${item.completed}`, 10, y);
+      y += 10;
+    });
+
+    doc.save("analytics_data.pdf");
+  };
+
   return (
-    <div className={`flex h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900"}`}>
-      <Sidebar theme={theme} />
-      <div className={`flex-1 overflow-y-auto p-8 ${theme === "light" ? "text-gray-900" : "text-gray-100"}`}>
-        <h3 className={`text-lg font-medium leading-6 mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"
-          }`}>Task Analytics</h3>
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar />
+      <div className="flex-1 overflow-y-auto p-8">
+        {/* <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Task Analytics</h3> */}
+        <div className="flex gap-4 mb-4">
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="border rounded p-2"
+          />
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="border rounded p-2"
+          />
+          <button onClick={downloadCSV} className="bg-blue-500 text-white p-2 rounded">
+            Download CSV
+          </button>
+          <button onClick={downloadPDF} className="bg-green-500 text-white p-2 rounded">
+            Download PDF
+          </button>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {loading ? (
             <p>Loading analytics...</p>
@@ -143,15 +223,15 @@ export default function Analytics({ theme }) {
             <>
               {/* Weekly Task Status */}
               <div className="mb-8">
-                <h4 className="text-md font-medium mb-2">Weekly Task Status</h4>
+                <h4 className="text-md font-medium text-gray-700 mb-2">Weekly Task Status</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={weeklyData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "#ccc" : "#444"} />
-                      <XAxis dataKey="name" stroke={theme === "light" ? "#000" : "#fff"} />
-                      <YAxis stroke={theme === "light" ? "#000" : "#fff"} />
-                      <Tooltip contentStyle={{ backgroundColor: theme === "light" ? "#fff" : "#333", color: theme === "light" ? "#000" : "#fff" }} />
-                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
                       <Bar dataKey="completed" fill="#10B981" name="Completed" />
                       <Bar dataKey="inProgress" fill="#3B82F6" name="In Progress" />
                       <Bar dataKey="pending" fill="#F59E0B" name="Pending" />
@@ -162,15 +242,15 @@ export default function Analytics({ theme }) {
 
               {/* Task Summary */}
               <div className="mb-8">
-                <h4 className="text-md font-medium mb-2">Task Summary</h4>
+                <h4 className="text-md font-medium text-gray-700 mb-2">Task Summary</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={statisticsData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "#ccc" : "#444"} />
-                      <XAxis dataKey="name" stroke={theme === "light" ? "#000" : "#fff"} />
-                      <YAxis stroke={theme === "light" ? "#000" : "#fff"} />
-                      <Tooltip contentStyle={{ backgroundColor: theme === "light" ? "#fff" : "#333", color: theme === "light" ? "#000" : "#fff" }} />
-                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
                       <Bar dataKey="count" fill="#6366F1" name="Tasks" />
                     </BarChart>
                   </ResponsiveContainer>
@@ -179,15 +259,15 @@ export default function Analytics({ theme }) {
 
               {/* Monthly Overview */}
               <div className="mb-8">
-                <h4 className="text-md font-medium mb-2">Monthly Task Overview</h4>
+                <h4 className="text-md font-medium text-gray-700 mb-2">Monthly Task Overview</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={monthlyData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "#ccc" : "#444"} />
-                      <XAxis dataKey="month" stroke={theme === "light" ? "#000" : "#fff"} />
-                      <YAxis stroke={theme === "light" ? "#000" : "#fff"} />
-                      <Tooltip contentStyle={{ backgroundColor: theme === "light" ? "#fff" : "#333", color: theme === "light" ? "#000" : "#fff" }} />
-                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
                       <Line dataKey="created" stroke="#3B82F6" name="Created Tasks" />
                       <Line dataKey="completed" stroke="#10B981" name="Completed Tasks" />
                     </LineChart>
@@ -197,13 +277,13 @@ export default function Analytics({ theme }) {
 
               {/* Weekly Task Distribution */}
               <div className="mb-8">
-                <h4 className="text-md font-medium mb-2">Weekly Task Distribution</h4>
+                <h4 className="text-md font-medium text-gray-700 mb-2">Weekly Task Distribution</h4>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart outerRadius={90} data={weeklyData}>
-                      <PolarGrid stroke={theme === "light" ? "#ccc" : "#444"} />
-                      <PolarAngleAxis dataKey="name" stroke={theme === "light" ? "#000" : "#fff"} />
-                      <PolarRadiusAxis stroke={theme === "light" ? "#000" : "#fff"} />
+                      <PolarGrid />
+                      <PolarAngleAxis dataKey="name" />
+                      <PolarRadiusAxis />
                       <Radar
                         name="Completed"
                         dataKey="completed"
@@ -225,9 +305,8 @@ export default function Analytics({ theme }) {
                         fill="#F59E0B"
                         fillOpacity={0.6}
                       />
-                      <Legend wrapperStyle={{ color: theme === "light" ? "#000" : "#fff" }} />
+                      <Legend />
                     </RadarChart>
-
                   </ResponsiveContainer>
                 </div>
               </div>

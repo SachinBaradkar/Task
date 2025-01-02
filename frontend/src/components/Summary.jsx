@@ -19,7 +19,7 @@ export default function Summary() {
         throw new Error("No authentication token found. Please log in.");
       }
 
-      const response = await fetch("http://localhost:5000/api/tasks", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

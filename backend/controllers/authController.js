@@ -7,6 +7,9 @@ const { generateOTP } = require("../utils/otpGenerator");
 
 const { addToBlacklist } = require("../utils/blacklist");
 
+// Whitelisted Emails
+const WHITELISTED_EMAILS = ["satheshravani1024@gmail.com","rohitraut2612@gmail.com","sachinsbaradkar@gmail.com","thoratshailesh220@gmail.com", "suryawanshitanvi468@gmail.com", "Tabish@cleverpe.com", "Fida@cleverpe.com","shravanirsathe@gmail.com"]; // Add allowed emails here
+
 // Set up nodemailer transporter with your email provider's settings using environment variables
 const transporter = nodemailer.createTransport({
   service: 'gmail', // or any other email service provider
@@ -39,6 +42,12 @@ exports.sendOTP = async (req, res) => {
   const { email } = req.body;
 
   if (!email) return res.status(400).json({ message: "Email is required" });
+
+  // Check if the email is in the whitelist
+  if (!WHITELISTED_EMAILS.includes(email)) {
+    return res.status(403).json({ message: "Cannot send OTP to this email address" });
+  }
+
 
   try {
     const otp = generateOTP();
