@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
-import Sidebar from "../components/Sidebar";
+
+import Sidebar from "../Components/Sidebar";
 
 function TaskScreen({ theme }) {
   const [tasks, setTasks] = useState([]);
@@ -35,7 +36,7 @@ function TaskScreen({ theme }) {
         throw new Error("No authentication token found. Please log in.");
       }
 
-      const response = await fetch("http://localhost:5000/api/tasks", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +71,7 @@ function TaskScreen({ theme }) {
         createdBy: userId,
       };
 
-      const response = await fetch("http://localhost:5000/api/tasks", {
+      const response = await fetch("https://task-586i.onrender.com/api/tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +101,7 @@ function TaskScreen({ theme }) {
         throw new Error("No authentication token found. Please log in.");
       }
 
-      const response = await fetch(`http://localhost:5000/api/tasks/${taskToUpdate._id}`, {
+      const response = await fetch(`https://task-586i.onrender.com/api/tasks/${taskToUpdate._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +140,7 @@ function TaskScreen({ theme }) {
         throw new Error("No authentication token found. Please log in.");
       }
 
-      const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      const response = await fetch(`https://task-586i.onrender.com/api/tasks/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

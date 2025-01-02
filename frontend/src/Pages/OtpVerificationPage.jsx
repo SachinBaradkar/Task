@@ -42,7 +42,7 @@ function OtpVerificationPage() {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/verify-otp", {
+      const response = await axios.post("https://task-586i.onrender.com/api/auth/verify-otp", {
         email,
         otp: enteredOtp,
       });
