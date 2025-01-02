@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "./Components/Sidebar";
 
 function TaskScreen({ theme }) {
   const [tasks, setTasks] = useState([]);
